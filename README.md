@@ -1,4 +1,4 @@
-<img width="1270" height="1355" alt="image" src="https://github.com/user-attachments/assets/7e87e623-e853-4c53-8777-786d05a6c15a" /># 自动化测试平台
+# 自动化测试平台
 
 企业级自动化测试平台，集成 Web UI (Selenium) + REST API (Requests) 测试。
 
