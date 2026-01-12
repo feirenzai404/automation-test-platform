@@ -21,6 +21,6 @@ allure serve allure-results
 ## Allure报告示例
 （100% 通过率，4个用例，执行时间约6秒）
 
-![报告概览](reports/overview.png)
+![报告概览]("C:\Users\faker\Desktop\automation-test-platform\reports\index.html")
 
 欢迎 Star & Fork！
