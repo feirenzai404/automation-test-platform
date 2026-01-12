@@ -1,4 +1,4 @@
-# 自动化测试平台
+<img width="1270" height="1355" alt="image" src="https://github.com/user-attachments/assets/7e87e623-e853-4c53-8777-786d05a6c15a" /># 自动化测试平台
 
 企业级自动化测试平台，集成 Web UI (Selenium) + REST API (Requests) 测试。
 
@@ -19,8 +19,12 @@ pytest -s --alluredir=allure-results
 4. 查看Allure报告（浏览器自动打开）
 allure serve allure-results
 ## Allure报告示例
-（100% 通过率，4个用例，执行时间约6秒）
+100% 通过率，4个用例，执行时间约6秒
 
-![报告概览]("C:\Users\faker\Desktop\automation-test-platform\reports\index.html")
+![报告概览](reports/overview.png)
+
+![用例列表](reports/suites.png)
+
+完整静态报告：运行 `allure generate allure-results -o reports --clean` 生成后，用本地服务器查看（cd reports && python -m http.server 8000）。
 
 欢迎 Star & Fork！
