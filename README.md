@@ -32,9 +32,9 @@ allure serve allure-results
 
 总体统计：15个断言，平均响应时间223ms，通过率约60%（负向用例用于验证API边界行为）。
 
-![Newman报告概览](reports/Newman Report.png)
+![Newman报告概览](NewmanReport.png)
 
-![失败详情](NewmanReport.png)
+![失败详情]()
 
 完整报告文件：reports/report.html（双击打开查看每个请求详情、通过/失败、响应时间）。
 
