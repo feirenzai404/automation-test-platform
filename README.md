@@ -37,7 +37,19 @@ allure serve allure-results
 ![失败详情](reports/Failures.png)
 
 完整报告文件：reports/report.html（双击打开查看每个请求详情、通过/失败、响应时间）。
+## 项目升级成果）
+- UI 用例扩充到15+（登录、购物车、结账、多用户登录、筛选、登出、负向校验等）
+- API 用例扩充到30+（批量CRUD、参数化、负向参数非法/资源不存在）
+- 重构为 POM 模式（页面对象模型），代码更规范、可维护
+- 添加 pytest 参数化（多数据测试）、失败截图 + Allure.attach 日志
+- Runner 批量运行：23 个用例，通过率 91.3%（失败用例用于验证边界行为）
 
+### Allure 报告示例
+![Allure 报告概览 - 23 用例，通过率 91.3%](xm_Overview.png)
+
+![用例列表](xm_Suites.png)
+
+![失败用例详情示例](xm_E1.png)(xm_E2.png)
 命令行运行方式：
 ```bash
 newman run "api_collection.json" -r html --reporter-html-export report.html。
