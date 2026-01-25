@@ -4,10 +4,12 @@
 
 ## 技术栈
 - Python 3.10+
-- Pytest 9.0+
-- Selenium + webdriver-manager
-- Requests
-- allure-pytest
+- Pytest 9.0+（用例管理、fixture、断言、参数化）
+- Selenium + webdriver-manager（Web UI 自动化）
+- Requests（REST API 测试）
+- Postman + Newman（接口集合 + 命令行自动化）
+- allure-pytest（可视化报告生成）
+- GitHub（版本控制、公开展示
 
 ## 运行方式
 1. 激活虚拟环境
@@ -55,3 +57,4 @@ allure serve allure-results
 newman run "api_collection.json" -r html --reporter-html-export report.html。
 
 欢迎 Star & Fork！
+GitHub 仓库：https://github.com/feirenzai404/automation-test-platform
