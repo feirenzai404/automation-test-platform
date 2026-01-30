@@ -53,7 +53,7 @@ allure serve allure-results
 ![用例列表](xm_Suites.png)
 
 ![失败用例详情示例](xm_E1.png)(xm_E2.png)
-命令行运行方式：
+### 命令行运行方式（Newman）：
 ```powershell
 newman run "api_collection.json" -r html --reporter-html-export report.html
 
