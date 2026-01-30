@@ -57,7 +57,7 @@ allure serve allure-results
 ```bash
 newman run "api_collection.json" -r html --reporter-html-export report.html
 
-## 移动端自动化测试（Appium + Pytest + Allure）
+### 移动端自动化测试（Appium + Pytest + Allure）
 实现了基于 Appium 的 Android App UI 自动化测试框架，以 F-Droid 开源 App 为测试对象。
 
 ### 主要功能
