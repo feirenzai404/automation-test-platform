@@ -1,15 +1,16 @@
-# 自动化测试平台
+# 全栈自动化测试平台（Web UI + REST API + Mobile App）
 
-企业级自动化测试平台，集成 Web UI (Selenium) + REST API (Requests) 测试。
+企业级自动化测试框架，集成 Selenium、Requests、Appium，支持 Web、API、移动端多端测试。
 
 ## 技术栈
 - Python 3.10+
 - Pytest 9.0+（用例管理、fixture、断言、参数化）
 - Selenium + webdriver-manager（Web UI 自动化）
 - Requests（REST API 测试）
+- Appium + Appium-Python-Client（Android App UI 自动化）
 - Postman + Newman（接口集合 + 命令行自动化）
 - allure-pytest（可视化报告生成）
-- GitHub（版本控制、公开展示
+- GitHub（版本控制、公开展示）
 
 ## 运行方式
 1. 激活虚拟环境
