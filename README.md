@@ -55,5 +55,28 @@ allure serve allure-results
 命令行运行方式：
 ```bash
 newman run "api_collection.json" -r html --reporter-html-export report.html
+
+## 移动端自动化测试（Appium + Pytest + Allure）
+实现了基于 Appium 的 Android App UI 自动化测试框架，以 F-Droid 开源 App 为测试对象。
+
+### 主要功能
+- 支持 App 启动 + 首页加载验证
+- 支持搜索功能测试（点击 fab_search → 输入关键词 → 验证结果列表）
+- 使用 Pytest fixture 管理 Appium driver 会话
+- 集成 WebDriverWait + expected_conditions 元素等待
+- 失败用例自动截图并附加到 Allure 报告（conftest.py）
+- Allure 可视化报告生成
+
+### 运行方式
+```bash
+# 运行移动端测试
+pytest -s test/mobile/test_mobile_login.py
+
+# 生成 Allure 报告
+pytest -s --alluredir=allure-results test/mobile/test_mobile_login.py
+allure generate allure-results -o allure-report --clean
+
+# 打开报告
+(Allure_Appium.png)
 欢迎 Star & Fork！
 GitHub 仓库：https://github.com/feirenzai404/automation-test-platform
