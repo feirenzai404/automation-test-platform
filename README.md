@@ -54,8 +54,8 @@ allure serve allure-results
 
 ![失败用例详情示例](xm_E1.png)(xm_E2.png)
 命令行运行方式：
- ```powershell
-newman run "api_collection.json" -r html --reporter-html-export report.html
+powershell
+newman run "api_collection.json" -r html --reporter-html-export report.html'''
 
 ### 移动端自动化测试（Appium + Pytest + Allure）
 实现了基于 Appium 的 Android App UI 自动化测试框架，以 F-Droid 开源 App 为测试对象。
