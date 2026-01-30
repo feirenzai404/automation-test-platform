@@ -76,8 +76,8 @@ pytest -s test/mobile/test_mobile_login.py
 pytest -s --alluredir=allure-results test/mobile/test_mobile_login.py
 allure generate allure-results -o allure-report --clean
 
-# 打开报告
-allure-report/index.html（用浏览器打开）
+# Allure报告
+(Allure_Appium.png)
 
 欢迎 Star & Fork！
 GitHub 仓库：https://github.com/feirenzai404/automation-test-platform
