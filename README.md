@@ -79,6 +79,9 @@ allure generate allure-results -o allure-report --clean
 
 ### 移动端 Allure 报告示例
 只包含 `test_mobile_login.py` 的 2 个用例（启动验证 + 搜索验证），全通过 100%。
+<!-- 本地查看用相对路径 -->
 ![移动端 Allure 报告](reports/Allure_Appium.png)
+<!-- GitHub 查看用正确 Raw 链接 -->
+![移动端 Allure 报告](https://raw.githubusercontent.com/feirenzai404/automation-test-platform/main/reports/Allure_Appium.png)
 欢迎 Star & Fork！
 GitHub 仓库：https://github.com/feirenzai404/automation-test-platform
