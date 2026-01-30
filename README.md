@@ -54,7 +54,7 @@ allure serve allure-results
 
 ![失败用例详情示例](xm_E1.png)(xm_E2.png)
 命令行运行方式：
-```bash
+  ```bash
 newman run "api_collection.json" -r html --reporter-html-export report.html
 
 ### 移动端自动化测试（Appium + Pytest + Allure）
