@@ -79,8 +79,6 @@ pytest -s --alluredir=allure-results test/mobile/test_mobile_login.py
 allure generate allure-results -o allure-report --clean
 
 ### 移动端 Allure 报告示例
-
-```bash
 只包含 `test_mobile_login.py` 的 2 个用例（启动验证 + 搜索验证），全通过 100%。
 ![移动端 Allure 报告](reports/Allure_Appium.png)
 
