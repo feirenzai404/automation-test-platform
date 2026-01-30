@@ -72,7 +72,7 @@ newman run "api_collection.json" -r html --reporter-html-export report.html
 ### 运行方式
 ```bash
 # 运行移动端测
-pytest -s test/mobile/test_mobile_login.py```
+pytest -s test/mobile/test_mobile_login.py``
 
 # 生成 Allure 报告
 pytest -s --alluredir=allure-results test/mobile/test_mobile_login.py
