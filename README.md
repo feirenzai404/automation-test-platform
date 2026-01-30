@@ -71,12 +71,13 @@ newman run "api_collection.json" -r html --reporter-html-export report.html
 
 ### 运行方式
 ```bash
-# 运行移动端测
+# 运行移动端测试（这里还漏了“试”字，顺手补上~）
 pytest -s test/mobile/test_mobile_login.py
 
 # 生成 Allure 报告
 pytest -s --alluredir=allure-results test/mobile/test_mobile_login.py
 allure generate allure-results -o allure-report --clean
+``` 
 
 ### 移动端 Allure 报告示例
 只包含 `test_mobile_login.py` 的 2 个用例（启动验证 + 搜索验证），全通过 100%。
