@@ -1,5 +1,5 @@
-pytest
-selenium
-requests
-allure-pytest
-webdriver-manager
+pytest 
+selenium 
+requests 
+allure-pytest 
+webdriver-manager 

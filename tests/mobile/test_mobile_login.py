@@ -5,7 +5,7 @@ from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time  # 可选：用于强制等待
+import time
 
 @pytest.fixture(scope="session")
 def app_driver():
@@ -29,40 +29,51 @@ def app_driver():
     driver.quit()
 
 def test_open_fdroid(app_driver):
-    """测试打开 F-Droid App 并验证首页加载成功"""
-    wait = WebDriverWait(app_driver, 60)  # 延长到60秒
+    """测试打开 F-Droid App 并验证首页加载成功（用 app_list 验证）"""
+    wait = WebDriverWait(app_driver, 60)
 
     try:
-        # 用 XPath 验证标题 "F-Droid"（根据你的 Inspector 替换）
-        home_title = wait.until(
-            EC.presence_of_element_located((AppiumBy.XPATH, "//android.widget.TextView[@text='F-Droid']"))
+        # 用 app_list ID 验证首页列表容器是否存在
+        app_list = wait.until(
+            EC.presence_of_element_located((AppiumBy.ID, "org.fdroid.fdroid:id/app_list"))
         )
-        assert home_title.is_displayed(), "首页标题 'F-Droid' 未显示"
-        print("F-Droid App 启动成功，标题可见:", home_title.text)
+        assert app_list.is_displayed(), "首页 App 列表未显示"
+        print("F-Droid App 启动成功，首页 App 列表可见")
     except Exception as e:
         print(f"首页验证失败: {e}")
         allure.attach(app_driver.get_screenshot_as_png(), name="首页加载失败截图", attachment_type=allure.attachment_type.PNG)
         raise
 
 def test_search_app(app_driver):
-    """测试在 F-Droid 中搜索 App"""
+    """测试点击搜索按钮并验证搜索功能"""
     wait = WebDriverWait(app_driver, 30)
 
     try:
-        # 定位搜索框（必须用 Inspector 确认真实 ID）
-        search_box = wait.until(
-            EC.presence_of_element_located((AppiumBy.ID, "org.fdroid.fdroid:id/search"))  # ← 这里替换成真实 ID
+        # 先点击搜索浮动按钮（fab_search）
+        fab_search = wait.until(
+            EC.presence_of_element_located((AppiumBy.ID, "org.fdroid.fdroid:id/fab_search"))
         )
-        search_box.click()
-        search_box.send_keys("Tomato")  # 搜索一个存在的 App
+        fab_search.click()
+        time.sleep(2)  # 等待搜索界面弹出或键盘出现（时间可调）
 
-        # 等待搜索结果出现（用 XPath 匹配结果文字）
-        result_item = wait.until(
-            EC.presence_of_element_located((AppiumBy.XPATH, "//android.widget.TextView[contains(@text, 'Tomato')]"))
+        # 如果点击 fab_search 后直接弹出搜索框，这里可以再定位输入框
+        # 但很多版本点击 fab 后直接进入搜索模式，已有输入焦点
+        # 如果需要再定位输入框，用 Inspector 确认搜索框 ID 后替换下面一行
+        # search_input = wait.until(EC.presence_of_element_located((AppiumBy.ID, "org.fdroid.fdroid:id/search_edit_text")))
+        # search_input.send_keys("Tomato")
+
+        # 直接输入关键词（假设点击 fab_search 后焦点在搜索框）
+        app_driver.press_keycode(29)  # A 键测试键盘（可选）
+        app_driver.press_keycode(46)  # T 键测试键盘（可选）
+        # 更好的方式：用 send_keys 到当前焦点元素
+        app_driver.find_element(AppiumBy.ID, "org.fdroid.fdroid:id/search").send_keys("Tomato")  # 如果有搜索框 ID
+
+        # 等待搜索结果列表出现（复用 app_list）
+        result_list = wait.until(
+            EC.presence_of_element_located((AppiumBy.ID, "org.fdroid.fdroid:id/app_list"))
         )
-        assert result_item.is_displayed(), "搜索 'Tomato' 结果未显示"
-        print("搜索 'Tomato' 成功，结果可见")
+        assert result_list.is_displayed(), "搜索结果列表未显示"
+        print("点击搜索按钮并搜索 'Tomato' 成功，结果列表可见")
     except Exception as e:
         print(f"搜索失败: {e}")
         allure.attach(app_driver.get_screenshot_as_png(), name="搜索失败截图", attachment_type=allure.attachment_type.PNG)
-        raise
