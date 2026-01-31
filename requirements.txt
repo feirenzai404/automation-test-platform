@@ -1,5 +1,12 @@
-pytest 
-selenium 
-requests 
-allure-pytest 
-webdriver-manager 
+# 核心测试框架
+pytest>=7.4.0
+allure-pytest>=2.13.2
+
+# 自动化测试工具
+selenium>=4.15.0
+playwright>=1.40.0
+webdriver-manager>=4.0.1
+Appium-Python-Client>=2.11.0  # 新增：Appium移动端测试依赖
+
+# 接口测试
+requests>=2.31.0
