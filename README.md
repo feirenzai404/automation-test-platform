@@ -71,7 +71,7 @@ newman run "api_collection.json" -r html --reporter-html-export report.html
 
 ### 运行方式
 ```bash
-# 运行移动端测试（这里还漏了“试”字，顺手补上~）
+# 运行移动端测试
 pytest -s test/mobile/test_mobile_login.py
 
 # 生成 Allure 报告
