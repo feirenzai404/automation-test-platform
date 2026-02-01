@@ -1,3 +1,8 @@
+import os
+import pytest
+
+if os.getenv("GITHUB_ACTIONS") == "true":
+    pytest.skip("Mobile 测试需要 Appium server，CI 环境未启动，跳过", allow_module_level=True)
 import pytest
 import allure
 from appium import webdriver
@@ -6,6 +11,8 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+import os
+import pytest
 
 @pytest.fixture(scope="session")
 def app_driver():
