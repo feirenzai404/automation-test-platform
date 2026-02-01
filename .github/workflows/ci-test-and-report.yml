@@ -37,37 +37,34 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          # 补充Playwright驱动安装（如果用到）
+          # 如需Playwright驱动，保留以下两行；无需则删除
           playwright install chromium
           playwright install-deps
         shell: pwsh
 
-      # 步骤5：运行Pytest（含临时修复：清除缓存+解决命名冲突）
+      # 步骤5：运行Pytest（恢复全量扫描，仅保留基础缓存清理）
       - name: Run pytest and generate Allure results
         run: |
-          # 1. 强制创建allure-results目录（避免执行失败时目录缺失）
+          # 1. 强制创建allure-results目录
           New-Item -ItemType Directory -Path allure-results -Force
           
-          # 2. 临时修复：删除__pycache__和.pyc编译文件（解决命名冲突）
-          Write-Host "Cleaning up __pycache__ and .pyc files..."
-          Get-ChildItem -Path . -Recurse -Directory -Name "__pycache__" -ErrorAction SilentlyContinue | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+          # 2. 基础缓存清理（仅清理残留pyc文件，无需递归删除__pycache__）
+          Write-Host "Cleaning up residual .pyc files..."
           Get-ChildItem -Path . -Recurse -Filter "*.pyc" -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
           
-          # 3. 执行pytest，添加缓存清理+忽略缓存目录参数
+          # 3. 全量执行pytest（无目录限制，依赖pytest.ini的收集规则）
           try {
-            Write-Host "Running pytest with cache clear and conflict fixes..."
+            Write-Host "Running full pytest suite with Allure report..."
             pytest --cache-clear `
-                   --ignore=__pycache__ `
                    --alluredir=allure-results `
                    -v
           } catch {
             Write-Warning "Pytest execution had errors: $_"
-            # 测试失败仍返回0，保证后续步骤执行
             exit 0
           }
         shell: pwsh
 
-      # 步骤6：上传Allure结果（无论测试成功/失败都上传）
+      # 步骤6：上传Allure结果
       - name: Upload Allure results as artifact
         uses: actions/upload-artifact@v4
         if: always()
