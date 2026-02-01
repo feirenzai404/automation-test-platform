@@ -2,59 +2,45 @@ name: CI - Run Pytest & Generate Allure Report
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   test:
     runs-on: windows-latest
-    timeout-minutes: 30  # 新增超时控制，避免挂起
+    timeout-minutes: 30
 
     steps:
-    - name: Set up job
-      uses: actions/checkout@v4
+      # 步骤1：拉取代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.10"
+      # 步骤2：配置Python 3.10
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-    - name: Cache pip dependencies  # 新增缓存，提速依赖安装
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~\AppData\Local\pip\Cache
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+      # 步骤3：安装依赖（极简版，无复杂判断）
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest>=7.4.0 allure-pytest>=2.13.2
+        shell: pwsh
 
-    - name: Install test dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if (Test-Path "requirements.txt") {
-          pip install -r requirements.txt
-        } else {
-          pip install pytest>=7.4.0 allure-pytest>=2.13.2 selenium>=4.15.2 appium-python-client>=3.1.0
-        }
-
-    - name: Run all tests with pytest  # 核心修复：优化运行逻辑，消除语法错误
-      run: |
-        # 检测项目是否有自定义的run_tests.py，有则运行，无则执行标准pytest
-        if (Test-Path "run_tests.py") {
-          Write-Host "Running custom test script: run_tests.py"
-          python run_tests.py  # 直接用python执行，而非生成无效文件
-        } else {
-          Write-Host "No custom run_tests.py found, running standard pytest"
-          # 执行pytest并生成Allure结果（指定结果目录，兼容Allure）
+      # 步骤4：运行Pytest（彻底移除run_tests.py生成逻辑，避免语法错误）
+      - name: Run pytest directly
+        run: |
+          # 直接执行pytest，不依赖任何自定义脚本
           pytest --alluredir=allure-results -v
-        }
-      shell: pwsh  # 明确指定PowerShell，避免语法兼容问题
+        shell: pwsh
 
-    - name: Upload Allure results as artifact
-      uses: actions/upload-artifact@v4
-      if: always()  # 无论测试成功/失败，都上传结果
-      with:
-        name: allure-results
-        path: allure-results/
-        retention-days: 14
+      # 步骤5：上传Allure结果
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results
+          path: allure-results/
+          retention-days: 14
