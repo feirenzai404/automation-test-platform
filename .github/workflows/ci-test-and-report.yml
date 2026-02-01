@@ -14,10 +14,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-         - name: Set up Python 3.10
+      - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"   
+          python-version: "3.10"
 
       - name: Install test dependencies
         run: |
@@ -27,17 +27,17 @@ jobs:
           } else {
             Write-Output "requirements.txt not found, skipping bulk install"
           }
-          # 兜底安装核心依赖（防止个别包缺失）
+          # 兜底安装核心依赖
           pip install pytest>=7.4.0 allure-pytest>=2.13.2 selenium>=4.15.0 Appium-Python-Client>=2.11.0 requests>=2.31.0
 
-      # 可选：Appium 安装（如果 mobile 测试需要，windows-latest 支持 npm）
+      # 可选：Appium 安装（取消注释即可启用）
       # - name: Install Appium (optional for mobile)
       #   run: |
       #     npm install -g appium
       #     appium driver install uiautomator2
 
-        - name: Run all tests with pytest
-        shell: pwsh   # 显式指定 PowerShell Core
+      - name: Run all tests with pytest
+        shell: pwsh
         run: |
           if (Test-Path -Path "run_tests.py") {
             python ./run_tests.py
