@@ -36,10 +36,11 @@ jobs:
       #     npm install -g appium
       #     appium driver install uiautomator2
 
-      - name: Run all tests with pytest
+        - name: Run all tests with pytest
+        shell: pwsh   # 显式指定 PowerShell Core
         run: |
-          if (Test-Path run_tests.py) {
-            python run_tests.py
+          if (Test-Path -Path "run_tests.py") {
+            python ./run_tests.py
           } else {
             pytest -v --alluredir=allure-results
           }
