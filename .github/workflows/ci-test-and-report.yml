@@ -2,53 +2,59 @@ name: CI - Run Pytest & Generate Allure Report
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   test:
     runs-on: windows-latest
+    timeout-minutes: 30  # 新增超时控制，避免挂起
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Set up job
+      uses: actions/checkout@v4
 
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
 
-      - name: Install test dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if (Test-Path requirements.txt) {
-            pip install -r requirements.txt
-          } else {
-            Write-Output "requirements.txt not found, skipping bulk install"
-          }
-          # 兜底安装核心依赖
-          pip install pytest>=7.4.0 allure-pytest>=2.13.2 selenium>=4.15.0 Appium-Python-Client>=2.11.0 requests>=2.31.0
+    - name: Cache pip dependencies  # 新增缓存，提速依赖安装
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~\AppData\Local\pip\Cache
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
 
-      # 可选：Appium 安装（取消注释即可启用）
-      # - name: Install Appium (optional for mobile)
-      #   run: |
-      #     npm install -g appium
-      #     appium driver install uiautomator2
+    - name: Install test dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if (Test-Path "requirements.txt") {
+          pip install -r requirements.txt
+        } else {
+          pip install pytest>=7.4.0 allure-pytest>=2.13.2 selenium>=4.15.2 appium-python-client>=3.1.0
+        }
 
-      - name: Run all tests with pytest
-        shell: pwsh
-        run: |
-          if (Test-Path -Path "run_tests.py") {
-            python ./run_tests.py
-          } else {
-            pytest -v --alluredir=allure-results
-          }
+    - name: Run all tests with pytest  # 核心修复：优化运行逻辑，消除语法错误
+      run: |
+        # 检测项目是否有自定义的run_tests.py，有则运行，无则执行标准pytest
+        if (Test-Path "run_tests.py") {
+          Write-Host "Running custom test script: run_tests.py"
+          python run_tests.py  # 直接用python执行，而非生成无效文件
+        } else {
+          Write-Host "No custom run_tests.py found, running standard pytest"
+          # 执行pytest并生成Allure结果（指定结果目录，兼容Allure）
+          pytest --alluredir=allure-results -v
+        }
+      shell: pwsh  # 明确指定PowerShell，避免语法兼容问题
 
-      - name: Upload Allure results as artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-results
-          path: allure-results/
-          retention-days: 14
+    - name: Upload Allure results as artifact
+      uses: actions/upload-artifact@v4
+      if: always()  # 无论测试成功/失败，都上传结果
+      with:
+        name: allure-results
+        path: allure-results/
+        retention-days: 14
