@@ -2,11 +2,13 @@
 pytest>=7.4.0
 allure-pytest>=2.13.2
 
-# 自动化测试工具
-selenium>=4.15.0
+# Web自动化测试
+selenium>=4.15.2
 playwright>=1.40.0
 webdriver-manager>=4.0.1
-Appium-Python-Client>=2.11.0  # 新增：Appium移动端测试依赖
+
+# 移动端自动化测试
+appium-python-client>=3.1.0
 
 # 接口测试
 requests>=2.31.0
